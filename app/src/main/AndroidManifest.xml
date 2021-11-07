@@ -46,18 +46,18 @@
         <activity
             android:name=".ui.loginModeActivity.LoginModeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.SignIn"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".ui.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.SignUp"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+<!--        <activity-->
+<!--            android:name=".ui.SignIn"-->
+<!--            android:theme="@style/AppTheme.NoActionBar"-->
+<!--            android:windowSoftInputMode="adjustResize" />-->
+<!--        <activity-->
+<!--            android:name=".ui.MainActivity"-->
+<!--            android:label="@string/app_name"-->
+<!--            android:theme="@style/AppTheme.NoActionBar" />-->
+<!--        <activity-->
+<!--            android:name=".ui.SignUp"-->
+<!--            android:theme="@style/AppTheme.NoActionBar"-->
+<!--            android:windowSoftInputMode="adjustResize" />-->
     </application>
 
 </manifest>
