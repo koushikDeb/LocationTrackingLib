@@ -10,8 +10,6 @@ object Utils {
       override fun onFinish() {
       finishCalled()
       }
-
     }.start()
-
   }
 }
