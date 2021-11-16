@@ -6,8 +6,7 @@ object Utils {
 
   fun executeAtDelay(totalDelay:Long,finishCalled:()->Unit){
     object: CountDownTimer(totalDelay,1000){
-      override fun onTick(millisUntilFinished: Long) {
-      }
+      override fun onTick(millisUntilFinished: Long) {}
       override fun onFinish() {
       finishCalled()
       }
