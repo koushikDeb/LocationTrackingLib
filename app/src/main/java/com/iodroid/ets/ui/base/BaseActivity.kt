@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Window
 import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import com.iodroid.ets.databinding.ActivityLoginModeBinding
 import java.util.zip.Inflater
@@ -19,23 +19,27 @@ abstract class BaseActivity<VM : ViewModel, B : ViewBinding>() : AppCompatActivi
   lateinit var binding: B
   lateinit var viewModel: VM
 
-  override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-    super.onCreate(savedInstanceState, persistentState)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
     binding = getInflatedBinding()
-    setContentView(binding.root)
     initViewModel()
+    setContentView(binding.root)
     if (isFullScreen()) {
       fullScreen()
     }
+
     created()
   }
 
   abstract fun isFullScreen(): Boolean
 
   private fun fullScreen() {
-    requestWindowFeature(Window.FEATURE_NO_TITLE)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-      window.insetsController?.hide(WindowInsets.Type.statusBars())
+      val controller =window.insetsController
+      if(controller != null) {
+        controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+        controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+      }
     } else {
       window.setFlags(
         WindowManager.LayoutParams.FLAG_FULLSCREEN,
