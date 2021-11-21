@@ -9,7 +9,6 @@ import com.iodroid.ets.ui.base.BaseActivity
 import com.iodroid.ets.ui.loginModeActivity.LoginModeActivity
 import com.iodroid.ets.util.Utils
 
-
 class SplashActivity: BaseActivity<ViewModel, ActivitySplashScreenBinding> () {
 
 
@@ -25,5 +24,9 @@ class SplashActivity: BaseActivity<ViewModel, ActivitySplashScreenBinding> () {
      ActivityNavigator.startActivity(LoginModeActivity::class.java,this,)
      finish()
     }
+  }
+
+  override fun destroyed() {
+
   }
 }

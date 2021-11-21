@@ -31,6 +31,13 @@ abstract class BaseActivity<VM : ViewModel, B : ViewBinding>() : AppCompatActivi
     created()
   }
 
+  override fun onDestroy() {
+    super.onDestroy()
+    destroyed()
+  }
+
+  abstract fun destroyed()
+
   abstract fun isFullScreen(): Boolean
 
   private fun fullScreen() {
