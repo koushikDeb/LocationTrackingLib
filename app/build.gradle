@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.iodroid.ets"
-        minSdk 21
+        minSdk 26
         targetSdk 31
         versionCode 1
         versionName "1.0"
