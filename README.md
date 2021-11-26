@@ -12,7 +12,7 @@ Live Location Tracking Service with Room Db
       
  # Start Tracking just using 
  //Check for location permission 
-   myTracker.startTracking()
+ myTracker.startTracking()
    
  # Access values from DB 
  myTracker.getTotalCount()
