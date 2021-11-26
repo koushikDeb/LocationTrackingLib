@@ -10,8 +10,7 @@ Live Location Tracking Service with Room Db
       tracker.setUserId("anyUserid").build()
       
       
- # Start Tracking just using 
- //Check for location permission 
+ # Start Tracking just using //Check for location permission 
  myTracker.startTracking()
    
  # Access values from DB 
