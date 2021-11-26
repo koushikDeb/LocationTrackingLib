@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="25dp"
             android:padding="12dp"
-            android:text="SIGN IN"
+            android:text="start Track"
             android:textColor="@color/colorWhite"
             android:background="@drawable/chip1"
             />
@@ -37,7 +37,7 @@
             android:layout_marginRight="25dp"
             android:layout_marginBottom="25dp"
             android:padding="12dp"
-            android:text="SIGN UP"
+            android:text="Clear All Locations"
             android:textColor="@color/colorWhite"
             android:background="@drawable/chip1"
             />

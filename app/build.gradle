@@ -48,6 +48,8 @@ dependencies {
 
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
-    implementation 'com.google.android.gms:play-services:12.0.1'
+
  //   implementation 'com.google.android.gms:play-services-maps:18.0.0'
+    // Import the BoM for the Firebase platform
+
 }
