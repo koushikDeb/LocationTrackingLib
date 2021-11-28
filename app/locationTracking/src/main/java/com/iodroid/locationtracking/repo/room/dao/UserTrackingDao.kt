@@ -22,7 +22,7 @@ interface UserTrackingDao {
   fun getPositionByDate(startDateTime: OffsetDateTime,endDateTime:OffsetDateTime): List<UserTrackingEntity>
 
   @Query("DELETE FROM UserTrackingEntity")
-  suspend fun clearAllNews()
+  suspend fun clearAllLocations()
 
 
   @Query("SELECT * FROM UserTrackingEntity")
