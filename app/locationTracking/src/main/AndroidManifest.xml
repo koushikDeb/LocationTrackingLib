@@ -8,6 +8,7 @@
         <service
             android:name=".services.TrackingService"
             android:enabled="true"
+            android:foregroundServiceType="location"
             android:exported="true"></service>
     </application>
 

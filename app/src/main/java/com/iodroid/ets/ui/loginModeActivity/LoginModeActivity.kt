@@ -1,61 +1,47 @@
 package com.iodroid.ets.ui.loginModeActivity
 
-import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 
-import android.view.Window
-import android.view.WindowManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.iodroid.ets.App
-import com.iodroid.ets.R
 import com.iodroid.ets.databinding.ActivityLoginModeBinding
 
 import com.iodroid.ets.ui.base.BaseActivity
 import com.iodroid.ets.util.AppConstants
-import com.iodroid.locationtracking.DroidTracking
+import com.iodroid.locationtracking.DroidTrackingBuilder
 
 
 class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
 
 
-  override fun isFullScreen(): Boolean = true
-
-  override fun getInflatedBinding(): ActivityLoginModeBinding = ActivityLoginModeBinding.inflate(layoutInflater)
-
-  override fun getViewModelClass(): Class<ViewModel>? = null
-
   override fun created() {
-   setupListners()
+    setupListeners()
+    tracker.setUserId("anyUserid")
   }
 
-  private fun setupListners(){
+  private fun setupListeners(){
     binding.btnLogin.setOnClickListener(View.OnClickListener {
-//      startActivity(Intent(this, SignIn::class.java))
       startTrackingModule()
-      //finish()
     })
+
     binding.btnSignup.setOnClickListener(View.OnClickListener {
-//      startActivity(Intent(this, SignUp::class.java))
-      finish()
+      tracker.build().clearLocations()
     })
   }
 
   private fun startTrackingModule() {
     if (locationPermissionAvailable()) {
-      (application as App).myTracker.startTracking()
+      tracker.build().startTracking()
     } else {
       requestWritePermission()
     }
   }
 
   override fun destroyed() {
-    (application as App).myTracker.stopTracking()
+   //   tracker.build().stopTracking()
   }
 
   private fun locationPermissionAvailable(): Boolean {
@@ -78,5 +64,14 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
       startTrackingModule()
     }
   }
+
+
+
+  override fun isFullScreen(): Boolean = true
+
+  override fun getInflatedBinding(): ActivityLoginModeBinding = ActivityLoginModeBinding.inflate(layoutInflater)
+
+  override fun getViewModelClass(): Class<ViewModel>? = null
+
 
 }

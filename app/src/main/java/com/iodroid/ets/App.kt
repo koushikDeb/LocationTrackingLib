@@ -1,14 +1,23 @@
 package com.iodroid.ets
 
 import android.app.Application
-import com.iodroid.locationtracking.DroidTracking
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.iodroid.locationtracking.DroidTrackingBuilder
 
 class App: Application() {
 
-  open lateinit var myTracker:DroidTracking;
+  lateinit var myTracker:DroidTrackingBuilder.Builder;
   override fun onCreate() {
     super.onCreate()
-    myTracker = DroidTracking(applicationContext)
-    myTracker.setDBEnabled(true)
+    myTracker = getBuilder()
+
+
+  }
+  private fun getBuilder() :DroidTrackingBuilder.Builder{
+    val db = Firebase.firestore
+    return DroidTrackingBuilder.Builder(this)
+      .setDbEnabled(true)
+      .setFirebaseEnabled(db)
   }
 }

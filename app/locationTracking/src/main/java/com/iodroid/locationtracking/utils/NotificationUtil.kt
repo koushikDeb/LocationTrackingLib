@@ -16,20 +16,21 @@ class NotificationUtil(private val service: Service) {
 
   fun showNotification() {
     val notification: Notification = getNotification(service.getString(R.string.notification_desc))
-    notificationManager = NotificationManagerCompat.from(service)
     notifyNotification(notification)
     service.startForeground(Constants.notificationId, notification)
   }
 
   fun notifyNotification(notification: Notification) {
+    if (notificationManager == null) {
+      notificationManager = NotificationManagerCompat.from(service)
+    }
     notificationManager?.let {
       it.notify(Constants.notificationId, notification)
-
     }
   }
 
 
-  private fun getNotification(contentText:String): Notification {
+  fun getNotification(contentText:String): Notification {
     return NotificationCompat.Builder(service, Constants.CHANNEL_ID_LOCATION_TRACKING)
       .setSmallIcon(R.drawable.ic_my_location)
       .setContentTitle(contentText)
