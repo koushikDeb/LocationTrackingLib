@@ -20,6 +20,8 @@ class DroidTrackingBuilder(builder: Builder) {
    private val alarmScheduleIntent = Intent(context, TrackingService::class.java)
    private val isDbEnabled: Boolean =  builder.isDbEnabled
 
+  class Builder(context: Application){
+    var context:Application = context
 
   class Builder(context: Application){
     var context:Application = context
@@ -37,6 +39,7 @@ class DroidTrackingBuilder(builder: Builder) {
       this.userId = userId
       return this
     }
+
 
     fun build(): DroidTrackingBuilder{
       return DroidTrackingBuilder(this)
@@ -68,6 +71,7 @@ class DroidTrackingBuilder(builder: Builder) {
       Repository.clearDb()
     }
   }
+
 
   fun getTotalCount() {
     GlobalScope.launch {

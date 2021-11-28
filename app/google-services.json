@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "760115477611",
+    "project_id": "employeelocationtracking-474c0",
+    "storage_bucket": "employeelocationtracking-474c0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760115477611:android:d2405a07f300a2cd28052e",
+        "android_client_info": {
+          "package_name": "com.iodroid.ets"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760115477611-jfqua2k62b6oagaj72i5g0fn23puhoki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARtjVZD5j1MkqrsNIJmpxnpXjawm3qf5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760115477611-jfqua2k62b6oagaj72i5g0fn23puhoki.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

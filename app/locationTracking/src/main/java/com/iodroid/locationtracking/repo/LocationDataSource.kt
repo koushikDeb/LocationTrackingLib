@@ -16,7 +16,8 @@ import java.time.OffsetDateTime
 
 object LocationDataSource {
 
-  fun getLocationCallBack(locationUpdated:(location:Location,count:Int)->Unit):LocationCallback {
+  fun getLocationCallBack(locationUpdated:(location:Location,count:Int)->Unit): LocationCallback {
+
     return object : LocationCallback() {
       override fun onLocationResult(locationResult: LocationResult) {
         for (location in locationResult.locations) {
