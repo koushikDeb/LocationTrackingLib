@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
-import com.google.firebase.firestore.FirebaseFirestore
 import com.iodroid.locationtracking.repo.Repository
 import com.iodroid.locationtracking.repo.room.AppDatabase
 import com.iodroid.locationtracking.repo.room.dbUtils.DBUtils
@@ -20,11 +19,13 @@ class DroidTrackingBuilder(builder: Builder) {
    private val userId = builder.userId
    private val alarmScheduleIntent = Intent(context, TrackingService::class.java)
    private val isDbEnabled: Boolean =  builder.isDbEnabled
-   private val firebaseDb: FirebaseFirestore? = builder.firebaseDb
 
   class Builder(context: Application){
     var context:Application = context
-    var firebaseDb:FirebaseFirestore? = null
+
+  class Builder(context: Application){
+    var context:Application = context
+
     var userId:String = "userId"
     var isDbEnabled = false
 
@@ -38,12 +39,7 @@ class DroidTrackingBuilder(builder: Builder) {
       this.userId = userId
       return this
     }
-    fun setFirebaseEnabled(
-      firebaseDb: FirebaseFirestore
-    ): Builder{
-      this.firebaseDb = firebaseDb
-      return this
-    }
+
 
     fun build(): DroidTrackingBuilder{
       return DroidTrackingBuilder(this)
@@ -73,6 +69,13 @@ class DroidTrackingBuilder(builder: Builder) {
   fun clearLocations() {
     GlobalScope.launch {
       Repository.clearDb()
+    }
+  }
+
+
+  fun getTotalCount() {
+    GlobalScope.launch {
+      Repository.getTotalCount()
     }
   }
 

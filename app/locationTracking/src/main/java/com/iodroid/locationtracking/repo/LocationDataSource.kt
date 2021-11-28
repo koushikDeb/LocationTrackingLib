@@ -4,7 +4,6 @@ import android.location.Location
 import android.util.Log
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
-
 import com.iodroid.locationtracking.repo.Repository.getTotalCount
 import com.iodroid.locationtracking.repo.Repository.saveToDb
 import com.iodroid.locationtracking.repo.room.dbUtils.DBUtils.isDbEnabled
@@ -18,6 +17,7 @@ import java.time.OffsetDateTime
 object LocationDataSource {
 
   fun getLocationCallBack(locationUpdated:(location:Location,count:Int)->Unit): LocationCallback {
+
     return object : LocationCallback() {
       override fun onLocationResult(locationResult: LocationResult) {
         for (location in locationResult.locations) {
