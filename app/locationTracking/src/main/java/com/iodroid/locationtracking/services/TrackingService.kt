@@ -21,6 +21,10 @@ import java.time.OffsetDateTime
 
 class TrackingService : Service() {
 
+  companion object{
+    var isServiceRunning:Boolean = false
+  }
+
   private var fusedLocationClient: FusedLocationProviderClient? = null
   private val notificationUtil=  NotificationUtil(this)
 
@@ -30,6 +34,7 @@ class TrackingService : Service() {
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    isServiceRunning = true
     notificationUtil.createNotificationChannel()
     notificationUtil.showNotification()
     startTracking()
@@ -54,6 +59,7 @@ class TrackingService : Service() {
 
 
   override fun onDestroy() {
+    isServiceRunning = false
     super.onDestroy()
     stopSelf()
   }

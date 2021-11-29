@@ -4,13 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/splash_background"
     tools:context=".ui.loginModeActivity.LoginModeActivity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:src="@drawable/splash_background" />
+ <ProgressBar
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:indeterminateOnly="true"
+     android:visibility="gone"
+     android:id="@+id/progress_horizontal"
+     style="?android:attr/progressBarStyleHorizontal"
+     />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,5 +48,7 @@
 
 
     </LinearLayout>
+
+
 
 </RelativeLayout>
