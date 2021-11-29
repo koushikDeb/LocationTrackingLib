@@ -5,10 +5,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
+
 import com.iodroid.locationtracking.repo.Repository
 import com.iodroid.locationtracking.repo.room.AppDatabase
 import com.iodroid.locationtracking.repo.room.dbUtils.DBUtils
 import com.iodroid.locationtracking.services.TrackingService
+import com.iodroid.locationtracking.services.TrackingService.Companion.isServiceRunning
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -20,8 +22,6 @@ class DroidTrackingBuilder(builder: Builder) {
    private val alarmScheduleIntent = Intent(context, TrackingService::class.java)
    private val isDbEnabled: Boolean =  builder.isDbEnabled
 
-  class Builder(context: Application){
-    var context:Application = context
 
   class Builder(context: Application){
     var context:Application = context
@@ -72,8 +72,12 @@ class DroidTrackingBuilder(builder: Builder) {
     }
   }
 
+  fun getServiceRunningStatus():Boolean
+  {
+    return isServiceRunning
+  }
 
-  fun getTotalCount() {
+  fun getAllLocationCount() {
     GlobalScope.launch {
       Repository.getTotalCount()
     }

@@ -15,4 +15,6 @@
     <string name="menu_send">Logout</string>
     <string name="title_activity_maps">Map</string>
     <string name="nav_add_a_device">Add a device</string>
+    <string name="startTracking">Start Tracking</string>
+    <string name="stopTracking">Stop Tracking</string>
 </resources>

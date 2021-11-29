@@ -1,7 +1,6 @@
 package com.iodroid.ets
 
 import android.app.Application
-
 import com.iodroid.locationtracking.DroidTrackingBuilder
 
 class App: Application() {
@@ -17,5 +16,6 @@ class App: Application() {
 
     return DroidTrackingBuilder.Builder(this)
       .setDbEnabled(true)
+
   }
 }
