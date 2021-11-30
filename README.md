@@ -111,7 +111,7 @@ Their are other methods to access DB go ahead and explore
 This project is licensed under the Apache License 2.0 - see the [LICENSE.md](/LICENSE) file for details
 
 
-## Developed by
+
 
 Koushik Deb [Linkedin](https://www.linkedin.com/in/koushik-deb-19562385)
 
