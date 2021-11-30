@@ -27,7 +27,6 @@ buildscript {
 	}
 ```
 
-Current Version = 0.1.5
 
 ```
 dependencies {
