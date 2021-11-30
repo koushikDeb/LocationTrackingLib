@@ -1,6 +1,7 @@
 
 # Location Tracking Library  
-
+ [![](https://jitpack.io/v/koushikDeb/LocationTrackingLib.svg)](https://jitpack.io/#koushikDeb/LocationTrackingLib)
+ 
 This library offers realtime location tracking with foreground service and integrated Room implementation. Tracking user location with a persistent notification using a foreground service and saves the location data to to local DB and provides multiple API to access location data later.  
 
 ## USE
@@ -9,6 +10,9 @@ This library offers realtime location tracking with foreground service and integ
 
 
 ## Getting Started
+
+**Current Version** 
+ [![](https://jitpack.io/v/koushikDeb/LocationTrackingLib.svg)](https://jitpack.io/#koushikDeb/LocationTrackingLib)
 
 ### Installing
 
