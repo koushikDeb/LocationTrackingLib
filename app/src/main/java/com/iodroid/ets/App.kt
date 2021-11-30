@@ -16,6 +16,9 @@ class App: Application() {
 
     return DroidTrackingBuilder.Builder(this)
       .setDbEnabled(true)
-
+      .setUserId("anyUserid")
+      .setLocationDistanceInterval(0.1f)
+      .setLocationFastTimeInterval(10)
+      .setLocationTimeInterval(2000)
   }
 }

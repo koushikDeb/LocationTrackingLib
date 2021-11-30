@@ -9,11 +9,14 @@ import androidx.core.content.ContextCompat
 import com.iodroid.locationtracking.repo.Repository
 import com.iodroid.locationtracking.repo.room.AppDatabase
 import com.iodroid.locationtracking.repo.room.dbUtils.DBUtils
+import com.iodroid.locationtracking.repo.room.entity.UserTrackingEntity
 import com.iodroid.locationtracking.services.TrackingService
 import com.iodroid.locationtracking.services.TrackingService.Companion.isServiceRunning
+import com.iodroid.locationtracking.utils.LocationRequestBuilder
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.time.OffsetDateTime
 
 class DroidTrackingBuilder(builder: Builder) {
 
@@ -23,6 +26,10 @@ class DroidTrackingBuilder(builder: Builder) {
    private val isDbEnabled: Boolean =  builder.isDbEnabled
 
 
+  private val timeInterval:Long = builder.timeInterval
+  private val displacementInterval: Float = builder.displacementInterval
+  private val fastTimeInterval: Long = builder.fastTimeInterval
+
   class Builder(context: Application){
     var context:Application = context
 
@@ -30,6 +37,9 @@ class DroidTrackingBuilder(builder: Builder) {
     var isDbEnabled = false
 
 
+    var timeInterval:Long = 1000*60
+    var displacementInterval: Float = 1f
+    var fastTimeInterval: Long = 100
 
     fun setDbEnabled(isDbEnabled: Boolean): Builder{
       this.isDbEnabled = isDbEnabled
@@ -37,6 +47,23 @@ class DroidTrackingBuilder(builder: Builder) {
     }
     fun setUserId(userId: String): Builder{
       this.userId = userId
+      return this
+    }
+
+    //To set the periodic time to update location
+    fun setLocationTimeInterval(timeInterval: Long): Builder{
+      this.timeInterval = timeInterval
+      return this
+    }
+
+    fun setLocationFastTimeInterval(fastTimeInterval: Long): Builder{
+      this.fastTimeInterval = fastTimeInterval
+      return this
+    }
+
+    //To set the minimum distance to to update location
+    fun setLocationDistanceInterval(displacementInterval: Float): Builder{
+      this.displacementInterval = displacementInterval
       return this
     }
 
@@ -49,8 +76,13 @@ class DroidTrackingBuilder(builder: Builder) {
   fun startTracking() {
     DBUtils.appDatabase = AppDatabase.getInstance(this.context)
     DBUtils.isDbEnabled = this.isDbEnabled
-
     DBUtils.userId = this.userId
+
+    LocationRequestBuilder.timeInterval = this.timeInterval
+    LocationRequestBuilder.fastTimeInterval = this.fastTimeInterval
+    LocationRequestBuilder.displacementInterval = this.displacementInterval
+
+
     if (!locationPermissionAvailable()) {
       throw (Exception("Location Permission not available exception"))
     }
@@ -77,11 +109,22 @@ class DroidTrackingBuilder(builder: Builder) {
     return isServiceRunning
   }
 
-  fun getAllLocationCount() {
-    GlobalScope.launch {
-      Repository.getTotalCount()
-    }
+  suspend fun getAllLocationCount(): Int {
+    return Repository.getTotalCount()
   }
+
+  suspend fun getAllLocation(): List<UserTrackingEntity> {
+    return  Repository.getAll()
+  }
+
+  suspend fun getPositionByDate(date:OffsetDateTime): List<UserTrackingEntity> {
+    return Repository.getPositionByDate(date)
+  }
+
+  suspend fun getAllLocationCount(startDateTime: OffsetDateTime,endDateTime: OffsetDateTime): List<UserTrackingEntity> {
+    return Repository.getPositionBetweenDateTime(startDateTime,endDateTime)
+  }
+
 
   private fun locationPermissionAvailable(): Boolean {
     return ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
