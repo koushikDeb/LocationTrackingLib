@@ -8,13 +8,17 @@ import com.google.android.gms.location.LocationResult
 
 object LocationRequestBuilder {
 
+  var timeInterval:Long = 0
+  var displacementInterval: Float = 0f
+  var fastTimeInterval: Long = 0
+
   @SuppressLint("RestrictedApi")
   fun buildLocationRequest(): LocationRequest {
    return LocationRequest().apply {
       priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-      interval = 1000*60
-      fastestInterval = 100
-      smallestDisplacement = 1f
+      interval = timeInterval
+      fastestInterval = fastTimeInterval
+      smallestDisplacement = displacementInterval
     }
   }
 

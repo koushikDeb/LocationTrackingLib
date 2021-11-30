@@ -6,6 +6,7 @@ import android.widget.Button
 
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iodroid.ets.App
 import com.iodroid.ets.R
@@ -17,14 +18,22 @@ import com.iodroid.ets.util.Utils
 import com.iodroid.ets.util.Utils.visible
 
 import com.iodroid.locationtracking.DroidTrackingBuilder
+import com.iodroid.locationtracking.repo.room.entity.UserTrackingEntity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
 
+
+  private val userLocations: MutableLiveData<List<UserTrackingEntity>> by lazy {
+    MutableLiveData<List<UserTrackingEntity>>()
+  }
+
   private var trackerBuilder: DroidTrackingBuilder? = null
 
   override fun created() {
-    tracker.setUserId("anyUserid")
+
     trackerBuilder = tracker.build()
     setupListeners()
   }
@@ -38,7 +47,7 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
     binding.progressHorizontal.visible(true)
     Utils.executeAtDelay(500) {
       trackerBuilder?.let { trackerBuilder ->
-        binding.btnLogin.text = if (!trackerBuilder.getServiceRunningStatus()) {
+        binding.btnStartTrack.text = if (!trackerBuilder.getServiceRunningStatus()) {
           getString(R.string.startTracking)
         } else {
           getString(R.string.stopTracking)
@@ -50,7 +59,7 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
 
   private fun setupListeners() {
     trackerBuilder?.let { trackerBuilder ->
-      binding.btnLogin.setOnClickListener(View.OnClickListener {
+      binding.btnStartTrack.setOnClickListener(View.OnClickListener {
         if (trackerBuilder.getServiceRunningStatus()) {
           trackerBuilder.stopTracking()
           checkTrackingText()
@@ -61,12 +70,31 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
       })
     }
 
+    binding.btnClearDb.setOnClickListener {
+      GlobalScope.launch {
+        trackerBuilder?.clearLocations()
+        userLocations.postValue(trackerBuilder?.getAllLocation())
+      }
+    }
 
 
-
-    binding.btnSignup.setOnClickListener(View.OnClickListener {
-      trackerBuilder?.clearLocations()
+    binding.btnGetAllLocations.setOnClickListener(View.OnClickListener {
+      GlobalScope.launch {
+        userLocations.postValue(trackerBuilder?.getAllLocation())
+      }
     })
+
+    userLocations.observe(this) { allLocations ->
+      binding.tvDbLog.text = ""
+      allLocations?.forEach { ust ->
+        binding.tvDbLog.text = "${binding.tvDbLog.text} \n \n ${getFlattenedDta(ust)}"
+      }
+    }
+
+  }
+
+  private fun getFlattenedDta(ust: UserTrackingEntity): String {
+    return "${ust.userID} | ${ust.dateTime} | ${ust.latitude} , ${ust.longitude} "
   }
 
   private fun startTrackingModule() {
