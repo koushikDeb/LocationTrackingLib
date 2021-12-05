@@ -21,8 +21,8 @@ Step 1. Add it in your root build.gradle at the end of repositories:
 ```
 buildscript {  
   repositories {
-			...
-			maven { url 'https://jitpack.io' }
+		...
+		maven { url 'https://jitpack.io' }
 		}
 	}
 ```
@@ -50,14 +50,17 @@ In your Project
 
 ```
 **//Create the tracking builder** 
-var tracker = DroidTrackingBuilder.Builder(applicationContext)  
-  .setDbEnabled(true)  
-  .setUserId(userId) // or you can set it later also  
-  .setLocationDistanceInterval(minimumDistance)  //in float
-  .setLocationFastTimeInterval(intervelInMilis)  
-  .setLocationTimeInterval(intervelInMilis)
 
-var trackerBuilder = tracker.build()
+var trackerBuilder = DroidTracking.Builder(this)
+      .setDbEnabled(true)
+      .setUserId("anyUserid") 
+      .setLocationDistanceInterval(minimumDistance)  // Default = 0.1f
+      .setLocationFastTimeInterval(intervelInMilis)  // Default = 10
+      .setLocationTimeInterval(intervelInMilis)      // Default = 100
+      .setAccuracy(accuracy)//Provide custom accuracy to filter out less accurate locations. Default = 50
+
+var tracker = trackerBuilder.build()
+
 ```    
 
 
@@ -67,7 +70,7 @@ var trackerBuilder = tracker.build()
 ```
 private fun startTrackingModule() {  
   if (locationPermissionAvailable()) {  
-    trackerBuilder?.startTracking()  
+    tracker?.startTracking()  
   } else {  
     requestWritePermission()  
   }  
@@ -76,27 +79,39 @@ private fun startTrackingModule() {
 
 ### Stop Tracking 
 ```
-  trackerBuilder.stopTracking()  
-```
-
-### Get All Data
-```
-GlobalScope.launch {  
-  mutableLivedata.postValue(trackerBuilder?.getAllLocation())  
-}
-```
-
-### Clear DB
-```
-GlobalScope.launch {  
-  trackerBuilder?.clearLocations()  
-}
+  tracker.stopTracking()  
 ```
 
 ### Get service running status 
+#### Provides the running status of Foreground Service we are using to capture location
 ```
-trackerBuilder.getServiceRunningStatus()
+tracker.getServiceRunningStatus()
 ```
+
+
+### Get All Locatios
+#### DB operation. Run in background 
+```
+tracker?.getAllLocation())  
+```
+
+### Clear Location
+#### DB operation. Run in background 
+```
+  tracker?.clearLocations()  
+```
+### Get locations for specific date
+#### DB operation. Run in background 
+```
+tracker?.getPositionByDate(offsetDateTime)
+```
+
+### Get locations for between date and time 
+#### DB operation. Run in background 
+```
+tracker?.getPositionByDate(startDateTime:OffsetDateTime,endDateTime:OffsetDateTime)
+```
+
 
 Their are other methods to access DB go ahead and explore
 
