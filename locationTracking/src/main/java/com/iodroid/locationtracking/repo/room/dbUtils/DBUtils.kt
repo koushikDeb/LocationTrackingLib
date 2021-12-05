@@ -12,4 +12,5 @@ object DBUtils {
     get() = this::appDatabase.isInitialized
 
   var userId:String = "uid"
+  var accuracy:Int = 50
 }

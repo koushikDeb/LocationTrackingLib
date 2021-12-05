@@ -18,7 +18,7 @@ interface UserTrackingDao {
   @Query("SELECT * FROM UserTrackingEntity WHERE date(dateTime) = :date ")
   suspend fun getPositionByDate(date: OffsetDateTime): List<UserTrackingEntity>
 
-  @Query("SELECT * FROM UserTrackingEntity WHERE datetime(dateTime) >= :startDateTime and  datetime(dateTime) <= :endDateTime")
+  @Query("SELECT * FROM UserTrackingEntity WHERE dateTime >= :startDateTime AND  dateTime < :endDateTime")
   suspend fun getPositionBetweenTime(startDateTime: OffsetDateTime,endDateTime:OffsetDateTime): List<UserTrackingEntity>
 
   @Query("DELETE FROM UserTrackingEntity")

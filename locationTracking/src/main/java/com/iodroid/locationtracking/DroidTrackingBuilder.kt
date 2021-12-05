@@ -17,13 +17,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.time.OffsetDateTime
+import java.time.ZoneId
 
-class DroidTrackingBuilder(builder: Builder) {
+class DroidTracking(builder: Builder) {
 
    private val context = builder.context
    private val userId = builder.userId
    private val alarmScheduleIntent = Intent(context, TrackingService::class.java)
    private val isDbEnabled: Boolean =  builder.isDbEnabled
+   private val accuracy: Int =  builder.accuracy
 
 
   private val timeInterval:Long = builder.timeInterval
@@ -35,6 +37,7 @@ class DroidTrackingBuilder(builder: Builder) {
 
     var userId:String = "userId"
     var isDbEnabled = false
+    var accuracy = 50
 
 
     var timeInterval:Long = 1000*60
@@ -47,6 +50,10 @@ class DroidTrackingBuilder(builder: Builder) {
     }
     fun setUserId(userId: String): Builder{
       this.userId = userId
+      return this
+    }
+    fun setAccuracy(accuracy: Int): Builder{
+      this.accuracy = accuracy
       return this
     }
 
@@ -68,8 +75,8 @@ class DroidTrackingBuilder(builder: Builder) {
     }
 
 
-    fun build(): DroidTrackingBuilder{
-      return DroidTrackingBuilder(this)
+    fun build(): DroidTracking{
+      return DroidTracking(this)
     }
   }
 
@@ -77,6 +84,7 @@ class DroidTrackingBuilder(builder: Builder) {
     DBUtils.appDatabase = AppDatabase.getInstance(this.context)
     DBUtils.isDbEnabled = this.isDbEnabled
     DBUtils.userId = this.userId
+    DBUtils.accuracy = this.accuracy
 
     LocationRequestBuilder.timeInterval = this.timeInterval
     LocationRequestBuilder.fastTimeInterval = this.fastTimeInterval
@@ -118,7 +126,12 @@ class DroidTrackingBuilder(builder: Builder) {
   }
 
   suspend fun getPositionByDate(date:OffsetDateTime): List<UserTrackingEntity> {
-    return Repository.getPositionByDate(date)
+    var enddate:OffsetDateTime = date.toLocalDate().plusDays(1).atStartOfDay().atZone(ZoneId.systemDefault()).toOffsetDateTime()
+    return getPositionByDate(date,enddate)
+  }
+
+  suspend fun getPositionByDate(startDate:OffsetDateTime,endDate:OffsetDateTime): List<UserTrackingEntity> {
+    return Repository.getPositionBetweenDateTime(startDate,endDate)
   }
 
   suspend fun getAllLocationCount(startDateTime: OffsetDateTime,endDateTime: OffsetDateTime): List<UserTrackingEntity> {

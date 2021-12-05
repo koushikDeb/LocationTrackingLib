@@ -16,11 +16,17 @@ import com.iodroid.ets.ui.base.BaseActivity
 import com.iodroid.ets.util.AppConstants
 import com.iodroid.ets.util.Utils
 import com.iodroid.ets.util.Utils.visible
+import com.iodroid.locationtracking.DroidTracking
 
-import com.iodroid.locationtracking.DroidTrackingBuilder
 import com.iodroid.locationtracking.repo.room.entity.UserTrackingEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
@@ -30,11 +36,11 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
     MutableLiveData<List<UserTrackingEntity>>()
   }
 
-  private var trackerBuilder: DroidTrackingBuilder? = null
+  private var tracker: DroidTracking? = null
 
   override fun created() {
 
-    trackerBuilder = tracker.build()
+    tracker = trackerBuilder.build()
     setupListeners()
   }
 
@@ -46,8 +52,8 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
   private fun checkTrackingText() {
     binding.progressHorizontal.visible(true)
     Utils.executeAtDelay(500) {
-      trackerBuilder?.let { trackerBuilder ->
-        binding.btnStartTrack.text = if (!trackerBuilder.getServiceRunningStatus()) {
+      tracker?.let { tracker ->
+        binding.btnStartTrack.text = if (!tracker.getServiceRunningStatus()) {
           getString(R.string.startTracking)
         } else {
           getString(R.string.stopTracking)
@@ -58,10 +64,10 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
   }
 
   private fun setupListeners() {
-    trackerBuilder?.let { trackerBuilder ->
+    tracker?.let { tracker ->
       binding.btnStartTrack.setOnClickListener(View.OnClickListener {
-        if (trackerBuilder.getServiceRunningStatus()) {
-          trackerBuilder.stopTracking()
+        if (tracker.getServiceRunningStatus()) {
+          tracker.stopTracking()
           checkTrackingText()
         } else {
           startTrackingModule()
@@ -72,15 +78,20 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
 
     binding.btnClearDb.setOnClickListener {
       GlobalScope.launch {
-        trackerBuilder?.clearLocations()
-        userLocations.postValue(trackerBuilder?.getAllLocation())
+        tracker?.clearLocations()
       }
     }
 
 
     binding.btnGetAllLocations.setOnClickListener(View.OnClickListener {
       GlobalScope.launch {
-        userLocations.postValue(trackerBuilder?.getAllLocation())
+        val offsetDateTime: OffsetDateTime =
+          LocalDate.parse(
+            "2021-12-04",
+            DateTimeFormatter.ofPattern("yyyy-MM-dd")
+          ).atStartOfDay().atZone(ZoneId.systemDefault()).toOffsetDateTime()
+
+        userLocations.postValue(tracker?.getPositionByDate(offsetDateTime))
       }
     })
 
@@ -99,7 +110,7 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
 
   private fun startTrackingModule() {
     if (locationPermissionAvailable()) {
-      trackerBuilder?.startTracking()
+      tracker?.startTracking()
     } else {
       requestWritePermission()
     }
