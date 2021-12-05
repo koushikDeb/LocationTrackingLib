@@ -72,7 +72,7 @@ private fun startTrackingModule() {
   if (locationPermissionAvailable()) {  
     tracker?.startTracking()  
   } else {  
-    requestWritePermission()  
+    requestLocationPermission()  
   }  
 }
 ```
