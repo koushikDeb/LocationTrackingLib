@@ -50,4 +50,29 @@ object Repository {
     }
   }
 
+  suspend fun clearLocationsByDate(startDateTime: OffsetDateTime,endDateTime:OffsetDateTime){
+    if (isDBInitialized) {
+      appDatabase.getUserTrackingDao().deleteByDate(startDateTime,endDateTime)
+    }
+  }
+
+  suspend fun clearSpecificLocation(locationItem: UserTrackingEntity){
+    if (isDBInitialized) {
+      appDatabase.getUserTrackingDao().deleteSpecific(locationItem)
+    }
+  }
+
+  suspend fun clearLocationByItemID(id: Int){
+    if (isDBInitialized) {
+      appDatabase.getUserTrackingDao().deleteById(id)
+    }
+  }
+
+
+  suspend fun clearLocationByUserID(userId: String){
+    if (isDBInitialized) {
+      appDatabase.getUserTrackingDao().deleteByUserId(userId)
+    }
+  }
+
 }

@@ -1,9 +1,6 @@
 package com.iodroid.locationtracking.repo.room.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.iodroid.locationtracking.repo.room.entity.UserTrackingEntity
 import java.time.OffsetDateTime
 
@@ -23,6 +20,18 @@ interface UserTrackingDao {
 
   @Query("DELETE FROM UserTrackingEntity")
   suspend fun clearAllLocations()
+
+  @Delete
+  suspend fun deleteSpecific(item:UserTrackingEntity)
+
+  @Query("DELETE FROM UserTrackingEntity WHERE id = :id")
+  suspend fun deleteById(id: Int)
+
+  @Query("DELETE FROM UserTrackingEntity WHERE userID = :id")
+  suspend fun deleteByUserId(id: String)
+
+  @Query("DELETE FROM UserTrackingEntity WHERE dateTime >= :startDateTime AND  dateTime < :endDateTime")
+  suspend fun deleteByDate(startDateTime: OffsetDateTime,endDateTime:OffsetDateTime)
 
 
   @Query("SELECT * FROM UserTrackingEntity")

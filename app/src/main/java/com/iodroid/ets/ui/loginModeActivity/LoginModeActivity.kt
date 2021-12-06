@@ -87,7 +87,7 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
       GlobalScope.launch {
         val offsetDateTime: OffsetDateTime =
           LocalDate.parse(
-            "2021-12-04",
+            "2021-12-05",
             DateTimeFormatter.ofPattern("yyyy-MM-dd")
           ).atStartOfDay().atZone(ZoneId.systemDefault()).toOffsetDateTime()
 

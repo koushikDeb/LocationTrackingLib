@@ -106,11 +106,46 @@ class DroidTracking(builder: Builder) {
     context.stopService(alarmScheduleIntent)
   }
 
+  //Clear All Location
   fun clearLocations() {
     GlobalScope.launch {
       Repository.clearDb()
     }
   }
+
+  fun clearLocationsByDate(date: OffsetDateTime) {
+    var endDate:OffsetDateTime = date.toLocalDate().plusDays(1).atStartOfDay().atZone(ZoneId.systemDefault()).toOffsetDateTime()
+    GlobalScope.launch {
+      Repository.clearLocationsByDate(date,endDate)
+    }
+  }
+
+  fun clearLocationsBetweenDate(startDate: OffsetDateTime, endDate:OffsetDateTime) {
+    GlobalScope.launch {
+      Repository.clearLocationsByDate(startDate,endDate)
+    }
+  }
+
+  fun clearSpecificLocation(locationItem: UserTrackingEntity) {
+    GlobalScope.launch {
+      Repository.clearSpecificLocation(locationItem)
+    }
+  }
+
+  fun clearLocationByItemID(id: Int) {
+    GlobalScope.launch {
+      Repository.clearLocationByItemID(id)
+    }
+  }
+
+  fun clearLocationByUserID(userId: String) {
+    GlobalScope.launch {
+      Repository.clearLocationByUserID(userId)
+    }
+  }
+
+
+
 
   fun getServiceRunningStatus():Boolean
   {
