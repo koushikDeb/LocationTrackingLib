@@ -21,10 +21,10 @@ Step 1. Add it in your root build.gradle at the end of repositories:
 ```
 buildscript {  
   repositories {
-		...
-		maven { url 'https://jitpack.io' }
-		}
-	}
+        ...
+	maven { url 'https://jitpack.io' }
+  }
+}
 ```
 
 
@@ -72,7 +72,7 @@ private fun startTrackingModule() {
   if (locationPermissionAvailable()) {  
     tracker?.startTracking()  
   } else {  
-    requestWritePermission()  
+    requestLocationPermission()  
   }  
 }
 ```
