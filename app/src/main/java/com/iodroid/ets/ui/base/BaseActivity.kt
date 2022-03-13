@@ -14,13 +14,13 @@ import java.util.zip.Inflater
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.iodroid.ets.App
-import com.iodroid.locationtracking.DroidTrackingBuilder
+import com.iodroid.locationtracking.DroidTracking
 
 abstract class BaseActivity<VM : ViewModel, B : ViewBinding>() : AppCompatActivity() {
 
   lateinit var binding: B
   lateinit var viewModel: VM
-  lateinit var tracker: DroidTrackingBuilder.Builder
+  lateinit var trackerBuilder: DroidTracking.Builder
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding = getInflatedBinding()
@@ -29,7 +29,7 @@ abstract class BaseActivity<VM : ViewModel, B : ViewBinding>() : AppCompatActivi
     if (isFullScreen()) {
       fullScreen()
     }
-    tracker = (application as App).myTracker
+    trackerBuilder = (application as App).myTracker
     created()
   }
 

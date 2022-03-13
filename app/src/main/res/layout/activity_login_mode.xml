@@ -4,13 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/splash_background"
     tools:context=".ui.loginModeActivity.LoginModeActivity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:src="@drawable/splash_background" />
+ <ProgressBar
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:indeterminateOnly="true"
+     android:visibility="gone"
+     android:id="@+id/progress_horizontal"
+     style="?android:attr/progressBarStyleHorizontal"
+     />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,30 +23,53 @@
         android:layout_centerInParent="true">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_login"
-            android:layout_width="fill_parent"
+            android:id="@+id/btnStartTrack"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="25dp"
             android:padding="12dp"
-            android:text="start Track"
+            android:text="@string/start_track"
+            android:gravity="center"
             android:textColor="@color/colorWhite"
             android:background="@drawable/chip1"
             />
-
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_signup"
-            android:layout_width="fill_parent"
+            android:id="@+id/btnClearDb"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             android:layout_marginBottom="25dp"
             android:padding="12dp"
-            android:text="Clear All Locations"
+            android:text="@string/clear_all_locations"
+            android:gravity="center"
             android:textColor="@color/colorWhite"
             android:background="@drawable/chip1"
             />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnGetAllLocations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="25dp"
+            android:padding="12dp"
+            android:gravity="center"
+            android:text="@string/get_all_location"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/chip1"
+            />
 
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/tv_db_log"
+    android:textSize="10sp"
+    android:background="@color/colorWhite"
+   />
     </LinearLayout>
+
+
 
 </RelativeLayout>
