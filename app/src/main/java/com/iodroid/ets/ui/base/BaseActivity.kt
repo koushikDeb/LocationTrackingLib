@@ -2,15 +2,11 @@ package com.iodroid.ets.ui.base
 
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.view.Window
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
-import com.iodroid.ets.databinding.ActivityLoginModeBinding
-import java.util.zip.Inflater
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.iodroid.ets.App
@@ -21,6 +17,7 @@ abstract class BaseActivity<VM : ViewModel, B : ViewBinding>() : AppCompatActivi
   lateinit var binding: B
   lateinit var viewModel: VM
   lateinit var trackerBuilder: DroidTracking.Builder
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding = getInflatedBinding()

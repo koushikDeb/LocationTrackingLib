@@ -15,7 +15,6 @@ import com.iodroid.locationtracking.utils.Constants.TrackingDDB
 @TypeConverters(DateTimeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
-
   abstract fun getUserTrackingDao(): UserTrackingDao
 
   companion object {
@@ -24,8 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     fun getInstance(context: Context): AppDatabase =
       INSTANCE ?: synchronized(this) {
-        INSTANCE
-          ?: buildDatabase(context).also { INSTANCE = it }
+        buildDatabase(context).also { INSTANCE = it }
       }
 
     private fun buildDatabase(context: Context) =

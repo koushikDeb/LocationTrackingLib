@@ -1,17 +1,16 @@
 package com.iodroid.locationtracking.repo
 
-import com.iodroid.locationtracking.repo.room.dbUtils.DBUtils
 import com.iodroid.locationtracking.repo.room.dbUtils.DBUtils.appDatabase
 import com.iodroid.locationtracking.repo.room.dbUtils.DBUtils.isDBInitialized
 import com.iodroid.locationtracking.repo.room.entity.UserTrackingEntity
 import java.time.OffsetDateTime
 
 object Repository {
-  suspend fun saveToDb(userTrackingData: UserTrackingEntity)
-  {
-   if (isDBInitialized) {
-     appDatabase.getUserTrackingDao().insert(userTrackingData)
-   }
+
+  suspend fun saveToDb(userTrackingData: UserTrackingEntity) {
+    if (isDBInitialized) {
+      appDatabase.getUserTrackingDao().insert(userTrackingData)
+    }
   }
 
   suspend fun getAll(): List<UserTrackingEntity> {
