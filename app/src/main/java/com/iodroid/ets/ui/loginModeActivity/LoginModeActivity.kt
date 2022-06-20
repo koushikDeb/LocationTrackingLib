@@ -1,7 +1,6 @@
 package com.iodroid.ets.ui.loginModeActivity
 
 import android.content.pm.PackageManager
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +9,6 @@ import com.iodroid.ets.R
 import com.iodroid.ets.databinding.ActivityLoginModeBinding
 import com.iodroid.ets.ui.base.BaseActivity
 import com.iodroid.ets.util.AppConstants
-import com.iodroid.ets.util.AppConstants.TAG
 import com.iodroid.ets.util.Utils
 import com.iodroid.ets.util.Utils.visible
 import com.iodroid.locationtracking.DroidTracking
@@ -31,7 +29,6 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
   private var tracker: DroidTracking? = null
 
   override fun created() {
-
     tracker = trackerBuilder.build()
     setupListeners()
   }
@@ -79,21 +76,16 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
       GlobalScope.launch {
         val offsetDateTime: OffsetDateTime =
           LocalDate.parse(
-            "2021-12-05",
+            "2022-06-20",
             DateTimeFormatter.ofPattern("yyyy-MM-dd")
           ).atStartOfDay().atZone(ZoneId.systemDefault()).toOffsetDateTime()
-
-        val temp = tracker?.getPositionByDate(offsetDateTime)
-        Log.d(TAG, "setupListeners: value for temp -> $temp")
-        userLocations.postValue(temp)
+        userLocations.postValue(tracker?.getPositionByDate(offsetDateTime))
       }
     }
 
     userLocations.observe(this) { allLocations ->
-      Log.d(TAG, "setupListeners: value changed for user locations with ${allLocations.size}")
       binding.tvDbLog.text = ""
       allLocations?.forEach { ust ->
-        Log.d(TAG, "setupListeners: $ust")
         binding.tvDbLog.text = "${binding.tvDbLog.text} \n \n ${getFlattenedDta(ust)}"
       }
     }

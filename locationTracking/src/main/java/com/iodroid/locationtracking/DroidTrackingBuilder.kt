@@ -84,7 +84,6 @@ class DroidTracking(builder: Builder) {
     LocationRequestBuilder.fastTimeInterval = this.fastTimeInterval
     LocationRequestBuilder.displacementInterval = this.displacementInterval
 
-
     if (!locationPermissionAvailable()) {
       throw (Exception("Location Permission not available exception"))
     }
