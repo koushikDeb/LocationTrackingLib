@@ -1,36 +1,26 @@
 package com.iodroid.ets.ui.loginModeActivity
 
 import android.content.pm.PackageManager
-import android.view.View
-import android.widget.Button
-
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.iodroid.ets.App
 import com.iodroid.ets.R
 import com.iodroid.ets.databinding.ActivityLoginModeBinding
-
 import com.iodroid.ets.ui.base.BaseActivity
 import com.iodroid.ets.util.AppConstants
 import com.iodroid.ets.util.Utils
 import com.iodroid.ets.util.Utils.visible
 import com.iodroid.locationtracking.DroidTracking
-
 import com.iodroid.locationtracking.repo.room.entity.UserTrackingEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.*
-
 
 class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
-
 
   private val userLocations: MutableLiveData<List<UserTrackingEntity>> by lazy {
     MutableLiveData<List<UserTrackingEntity>>()
@@ -39,7 +29,6 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
   private var tracker: DroidTracking? = null
 
   override fun created() {
-
     tracker = trackerBuilder.build()
     setupListeners()
   }
@@ -65,7 +54,7 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
 
   private fun setupListeners() {
     tracker?.let { tracker ->
-      binding.btnStartTrack.setOnClickListener(View.OnClickListener {
+      binding.btnStartTrack.setOnClickListener {
         if (tracker.getServiceRunningStatus()) {
           tracker.stopTracking()
           checkTrackingText()
@@ -73,7 +62,7 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
           startTrackingModule()
           checkTrackingText()
         }
-      })
+      }
     }
 
     binding.btnClearDb.setOnClickListener {
@@ -83,17 +72,16 @@ class LoginModeActivity : BaseActivity<ViewModel, ActivityLoginModeBinding>() {
     }
 
 
-    binding.btnGetAllLocations.setOnClickListener(View.OnClickListener {
+    binding.btnGetAllLocations.setOnClickListener {
       GlobalScope.launch {
         val offsetDateTime: OffsetDateTime =
           LocalDate.parse(
-            "2021-12-05",
+            "2022-06-20",
             DateTimeFormatter.ofPattern("yyyy-MM-dd")
           ).atStartOfDay().atZone(ZoneId.systemDefault()).toOffsetDateTime()
-
         userLocations.postValue(tracker?.getPositionByDate(offsetDateTime))
       }
-    })
+    }
 
     userLocations.observe(this) { allLocations ->
       binding.tvDbLog.text = ""
