@@ -9,7 +9,16 @@
             android:name=".services.TrackingService"
             android:enabled="true"
             android:foregroundServiceType="location"
+            android:stopWithTask="false"
             android:exported="true"></service>
+        <receiver android:name=".ServiceBroadCastReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.iodroid.location_tracking.start_service"/>
+                <action android:name="com.iodroid.location_tracking.stop_service"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

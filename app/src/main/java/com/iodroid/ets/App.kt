@@ -19,8 +19,8 @@ class App: Application() {
       .setDbEnabled(true)
       .setUserId("anyUserid")
       .setLocationDistanceInterval(0.1f)
-      .setLocationFastTimeInterval(10)
-      .setLocationTimeInterval(100)
+      .setLocationFastTimeInterval(10000)
+      .setLocationTimeInterval(10000)
       .setAccuracy(20)
   }
 }

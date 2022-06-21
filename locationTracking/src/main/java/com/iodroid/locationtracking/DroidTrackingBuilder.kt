@@ -2,28 +2,29 @@ package com.iodroid.locationtracking
 
 import android.app.Application
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.os.Build
 import androidx.core.content.ContextCompat
-
 import com.iodroid.locationtracking.repo.Repository
 import com.iodroid.locationtracking.repo.room.AppDatabase
 import com.iodroid.locationtracking.repo.room.dbUtils.DBUtils
 import com.iodroid.locationtracking.repo.room.entity.UserTrackingEntity
 import com.iodroid.locationtracking.services.TrackingService
 import com.iodroid.locationtracking.services.TrackingService.Companion.isServiceRunning
+import com.iodroid.locationtracking.utils.Constants.BROADCAST_START_TRACKING
+import com.iodroid.locationtracking.utils.Constants.BROADCAST_STOP_TRACKING
 import com.iodroid.locationtracking.utils.LocationRequestBuilder
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import java.time.OffsetDateTime
 import java.time.ZoneId
+
 
 class DroidTracking(builder: Builder) {
 
    private val context = builder.context
    private val userId = builder.userId
-   private val alarmScheduleIntent = Intent(context, TrackingService::class.java)
+   private val locationTrackingServiceIntent = Intent(context, TrackingService::class.java)
    private val isDbEnabled: Boolean =  builder.isDbEnabled
    private val accuracy: Int =  builder.accuracy
 
@@ -42,7 +43,7 @@ class DroidTracking(builder: Builder) {
 
     var timeInterval:Long = 1000*60
     var displacementInterval: Float = 1f
-    var fastTimeInterval: Long = 100
+    var fastTimeInterval: Long = 1000*60
 
     fun setDbEnabled(isDbEnabled: Boolean): Builder{
       this.isDbEnabled = isDbEnabled
@@ -80,6 +81,13 @@ class DroidTracking(builder: Builder) {
     }
   }
 
+  private fun registerReceiver(){
+    val filter = IntentFilter()
+    filter.addAction(BROADCAST_START_TRACKING)
+    filter.addAction(BROADCAST_STOP_TRACKING)
+    context.registerReceiver(ServiceBroadCastReceiver(),filter)
+  }
+
   fun startTracking() {
     DBUtils.appDatabase = AppDatabase.getInstance(this.context)
     DBUtils.isDbEnabled = this.isDbEnabled
@@ -94,16 +102,13 @@ class DroidTracking(builder: Builder) {
     if (!locationPermissionAvailable()) {
       throw (Exception("Location Permission not available exception"))
     }
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      context.startForegroundService(alarmScheduleIntent)
-    } else {
-      context.startService(alarmScheduleIntent)
-    }
+    registerReceiver()
+    context.sendBroadcast(Intent().setAction(BROADCAST_START_TRACKING))
   }
 
   fun stopTracking() {
-    context.stopService(alarmScheduleIntent)
+    isServiceRunning = false
+    context.sendBroadcast(Intent().setAction(BROADCAST_STOP_TRACKING))
   }
 
   //Clear All Location
