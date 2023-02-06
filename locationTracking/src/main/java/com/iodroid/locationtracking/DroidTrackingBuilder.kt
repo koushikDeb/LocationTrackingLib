@@ -3,6 +3,7 @@ package com.iodroid.locationtracking
 import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.iodroid.locationtracking.repo.Repository
@@ -74,7 +75,7 @@ class DroidTracking(builder: Builder) {
     }
   }
 
-  fun startTracking() {
+  fun startTracking(latestLocationCallback: ((location: Location) -> Unit)? = null) {
     DBUtils.appDatabase = AppDatabase.getInstance(this.context)
     DBUtils.isDbEnabled = this.isDbEnabled
     DBUtils.userId = this.userId
@@ -83,6 +84,8 @@ class DroidTracking(builder: Builder) {
     LocationRequestBuilder.timeInterval = this.timeInterval
     LocationRequestBuilder.fastTimeInterval = this.fastTimeInterval
     LocationRequestBuilder.displacementInterval = this.displacementInterval
+
+    TrackingService.latestLocationCallback = latestLocationCallback
 
     if (!locationPermissionAvailable()) {
       throw (Exception("Location Permission not available exception"))

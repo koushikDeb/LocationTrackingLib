@@ -18,6 +18,8 @@ class TrackingService : Service() {
   companion object{
     private var _isServiceRunning: Boolean = false
     val isServiceRunning get() = _isServiceRunning
+
+    var latestLocationCallback: ((location: Location) -> Unit)? = null
   }
 
   private var fusedLocationClient: FusedLocationProviderClient? = null
@@ -40,8 +42,9 @@ class TrackingService : Service() {
   private fun startTracking() {
     fusedLocationClient?.requestLocationUpdates(
       LocationRequestBuilder.buildLocationRequest(),
-      LocationDataSource.getLocationCallBack {location,count ->
-       locationUpdated(location,count)
+      LocationDataSource.getLocationCallBack { location,count ->
+        latestLocationCallback?.invoke(location)
+        locationUpdated(location,count)
       },
       null
     )

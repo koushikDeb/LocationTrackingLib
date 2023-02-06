@@ -17,6 +17,6 @@ class App: Application() {
       .setUserId("anyUserid")
       .setLocationDistanceInterval(0.1f)
       .setLocationFastTimeInterval(10)
-      .setLocationTimeInterval(100)
+      .setLocationTimeInterval(1000)
       .setAccuracy(20)
 }
