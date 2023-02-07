@@ -6,27 +6,24 @@ import android.content.Intent
 import android.location.Location
 import android.os.IBinder
 import android.util.Log
-import com.iodroid.locationtracking.utils.NotificationUtil
-
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.iodroid.locationtracking.repo.LocationDataSource
-import com.iodroid.locationtracking.repo.room.dbUtils.DBUtils
-import com.iodroid.locationtracking.repo.room.entity.UserTrackingEntity
-
+import com.iodroid.locationtracking.utils.Constants.TAG
 import com.iodroid.locationtracking.utils.LocationRequestBuilder
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.time.OffsetDateTime
-
+import com.iodroid.locationtracking.utils.NotificationUtil
 
 class TrackingService : Service() {
 
   companion object{
-    var isServiceRunning:Boolean = false
+    private var _isServiceRunning: Boolean = false
+    val isServiceRunning get() = _isServiceRunning
+
+    var latestLocationCallback: ((location: Location) -> Unit)? = null
   }
 
   private var fusedLocationClient: FusedLocationProviderClient? = null
-  private val notificationUtil=  NotificationUtil(this)
+  private val notificationUtil = NotificationUtil(this)
 
   override fun onCreate() {
     super.onCreate()
@@ -34,7 +31,7 @@ class TrackingService : Service() {
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-    isServiceRunning = true
+    _isServiceRunning = true
     notificationUtil.createNotificationChannel()
     notificationUtil.showNotification()
     startTracking()
@@ -45,27 +42,24 @@ class TrackingService : Service() {
   private fun startTracking() {
     fusedLocationClient?.requestLocationUpdates(
       LocationRequestBuilder.buildLocationRequest(),
-      LocationDataSource.getLocationCallBack {location,count ->
-       locationUpdated(location,count)
+      LocationDataSource.getLocationCallBack { location,count ->
+        latestLocationCallback?.invoke(location)
+        locationUpdated(location,count)
       },
       null
     )
   }
 
-
   private fun locationUpdated(location: Location,count:Int) {
+      Log.d(TAG, "locationUpdated: called $count")
       notificationUtil.notifyNotification(notificationUtil.getNotification("total location $count "))
   }
 
-
   override fun onDestroy() {
-    isServiceRunning = false
+    _isServiceRunning = false
     super.onDestroy()
     stopSelf()
   }
 
-
-  override fun onBind(intent: Intent?): IBinder? {
-    return null
-  }
+  override fun onBind(intent: Intent?): IBinder? = null
 }
